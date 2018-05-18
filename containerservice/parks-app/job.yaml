@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: parks-dbinit
+spec:
+  template:
+    spec:
+      containers:
+      - name: parks
+        image: berndverst/node-postgis-azure
+        command: ["/entrypoint.sh", "initdb"]
+        env:
+          - name: DBUSER
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBUSER
+          - name: DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBPASS
+          - name: DBPORT
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBPORT
+          - name: DBSERVER
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBSERVER
+          - name: PORT
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: PORT
+      restartPolicy: Never
+  backoffLimit: 4

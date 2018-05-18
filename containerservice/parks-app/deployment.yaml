@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: parks-deployment
+  labels:
+    app: parks
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: parks
+  template:
+    metadata:
+      labels:
+        app: parks
+    spec:
+      containers:
+      - name: parks
+        image: berndverst/node-postgis-azure:latest
+        ports:
+        - containerPort: 80
+        env:
+          - name: DBUSER
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBUSER
+          - name: DBPASS
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBPASS
+          - name: DBPORT
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBPORT
+          - name: DBSERVER
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: DBSERVER
+          - name: PORT
+            valueFrom:
+              secretKeyRef:
+                name: parks-secret
+                key: PORT

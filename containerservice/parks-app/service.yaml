@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: parks-service
+spec:
+  selector:
+    app: parks
+  ports:
+  - protocol: TCP
+    port: 80
